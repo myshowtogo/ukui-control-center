@@ -146,13 +146,13 @@ void Desktop::initTranslation() {
     iconMap.insert("ukui-power-manager-tray", "cs-power");
     iconMap.insert("fcitx", "fcitx");
     iconMap.insert("blueman", "preferences-system-bluetooth");
+    iconMap.insert("blueman-tray", "preferences-system-bluetooth");
     iconMap.insert("kylin-video", "kylin-video");
     iconMap.insert("kylin-screenshoot", "kylin-screenshoot");
     iconMap.insert("Onboard", "onboard");
 
     disList<<"ukui-sidebar"<<"kylin-nm"<<"ukui-volume-control-applet-qt"<<"update-notifier"<<"software-update-available"
-          <<"blueman-tray"<<"ukui-power-manager"<<"ukui-settings-daemon"<<"blueman-applet"
-         <<"ErrorApplication"<<"livepatch";
+            <<"ukui-power-manager"<<"ukui-settings-daemon"<<"ErrorApplication"<<"livepatch";
 }
 
 void Desktop::setupComponent() {
@@ -357,13 +357,13 @@ void Desktop::initTrayStatus(QString name, QIcon icon, QGSettings *gsettings) {
 
     QString status = gsettings->get(TRAY_ACTION_KEY).toString();
     if ("tray" == status) {
-        appSwitch->setChecked(false);
-    } else {
         appSwitch->setChecked(true);
+    } else {
+        appSwitch->setChecked(false);
     }
 
     connect(appSwitch, &SwitchButton::checkedChanged, [=](bool checked) {
-        if (!checked) {
+        if (checked) {
             gsettings->set(TRAY_ACTION_KEY, "tray");
             gsettings->set(TRAY_RECORD_KEY, "tray");
         } else {

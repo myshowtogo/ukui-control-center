@@ -346,6 +346,7 @@ void UserInfo::initComponent(){
     if (!getuid()){
         ui->changeTypeBtn->setEnabled(false);
         ui->changeGroupBtn->setEnabled(false);
+        ui->changeValidBtn->setEnabled(false);
         ui->autoLoginFrame->setVisible(false);
         ui->autoLoginFrame_2->setVisible(false);
     }

@@ -82,7 +82,7 @@ Widget::Widget(QWidget *parent)
     ui->monitorLabel->setStyleSheet("QLabel{font-size: 18px; color: palette(windowText);}");
     ui->quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
 
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 6, 0)
     oriApply = true;
 #else
     mOriApply = false;

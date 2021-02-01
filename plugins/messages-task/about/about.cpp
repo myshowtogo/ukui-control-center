@@ -21,6 +21,8 @@
 
 #include "about.h"
 #include "ui_about.h"
+#include "memoryentry.h"
+#include "cpuinfo.h"
 
 #include <KFormat>
 
@@ -114,49 +116,22 @@ void About::setupDesktopComponent() {
 
 void About::setupKernelCompenent() {
     QString kernal = QSysInfo::kernelType() + " " + QSysInfo::kernelVersion();
-    QString diskSize;
-    QString memorySize;
-    QString cpuType;
+    QString memorySize = "N/A";
+    QString cpuType = "N/A";
+    QString diskSize = "N/A";
 
-    QDBusInterface youkerInterface("com.kylin.assistant.systemdaemon",
-                                   "/com/kylin/assistant/systemdaemon",
-                                   "com.kylin.assistant.systemdaemon",
-                                   QDBusConnection::systemBus());
-    if (!youkerInterface.isValid()) {
-        qCritical() << "Create youker Interface Failed When Get Computer info: " << QDBusConnection::systemBus().lastError();
-        return;
-    }
+    MemoryEntry memoryInfo;
+    QStringList memory = memoryInfo.totalMemory();
+    memorySize = memory.at(0) + "(" + memory.at(1) + tr(" available") + ")";
 
-    QDBusReply<QMap<QString, QVariant>> diskinfo;
-    diskinfo  = youkerInterface.call("get_harddisk_info");
-    if (!diskinfo.isValid()) {
-        qDebug() << "diskinfo is invalid" << endl;
-    } else {
-        QMap<QString, QVariant> res = diskinfo.value();
-        diskSize = res["DiskCapacity"].toString();
-        QStringList diskList = diskSize.split("<1_1>");
-        diskSize.clear();
-        for (int i = 0; i < diskList.length(); i++) {
-            diskSize += tr("Disk") + QString::number(i+1) + ":" +diskList.at(i) + " ";
-        }
-    }
-
-    QDBusReply<QMap<QString, QVariant>> cpuinfo;
-    cpuinfo  = youkerInterface.call("get_cpu_info");
-    if (!cpuinfo.isValid()) {
-        qDebug() << "cpuinfo is invalid" << endl;
-    } else {
-        QMap<QString, QVariant> res = cpuinfo.value();
-        cpuType = res["CpuVersion"].toString();
-    }
-
-    QStringList memory = totalMemory();
-    memorySize = memorySize + memory.at(0) + "(" + memory.at(1) + tr(" available") + ")";
-
-    ui->cpuContent->setText(cpuType);
-    ui->diskContent->setText(diskSize);
     ui->kernalContent->setText(kernal);
     ui->memoryContent->setText(memorySize);
+
+    ui->cpuContent->setText(cpuinfo::getCpuName());
+
+    QStorageInfo storage = QStorageInfo::root();
+    diskSize = QString("%1").arg(storage.bytesTotal()/1024.0f/1024/1024, 0, 'f', 1) + " GB";
+    ui->diskContent->setText(diskSize);
 }
 
 void About::setupVersionCompenent() {

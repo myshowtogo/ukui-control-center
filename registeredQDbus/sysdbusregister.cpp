@@ -79,12 +79,19 @@ QString SysdbusRegister::getNoPwdLoginStatus(){
 
 //设置免密登录状态
 void SysdbusRegister::setNoPwdLoginStatus(bool status,QString username) {
+    QString filename = "/etc/lightdm/lightdm.conf";
+    QSettings  Settings(filename, QSettings::IniFormat);
 
+    Settings.beginGroup("SeatDefaults");
+    Settings.setValue("greeter-show-manual-login", "true");
+    Settings.endGroup();
+
+    QProcess::execute("sudo groupadd -r nopasswdlogin");
     QString cmd;
     if(true == status){
-         cmd = QString("gpasswd  -a %1 nopasswdlogin").arg(username);
+        cmd = QString("sudo gpasswd  -a %1 nopasswdlogin").arg(username);
     } else{
-        cmd = QString("gpasswd  -d %1 nopasswdlogin").arg(username);
+        cmd = QString("sudo gpasswd  -d %1 nopasswdlogin").arg(username);
     }
     QProcess::execute(cmd);
 }
@@ -92,13 +99,15 @@ void SysdbusRegister::setNoPwdLoginStatus(bool status,QString username) {
 // 设置自动登录状态
 void SysdbusRegister::setAutoLoginStatus(QString username) {
     QString filename = "/etc/lightdm/lightdm.conf";
-    QSharedPointer<QSettings>  autoSettings = QSharedPointer<QSettings>(new QSettings(filename, QSettings::IniFormat));
-    autoSettings->beginGroup("SeatDefaults");
+    QSettings  Settings(filename, QSettings::IniFormat);
 
-    autoSettings->setValue("autologin-user", username);
+    Settings.beginGroup("SeatDefaults");
+    Settings.setValue("autologin-user", username);
+    Settings.setValue("autologin-session", "ukui");
+    Settings.endGroup();
 
-    autoSettings->endGroup();
-    autoSettings->sync();
+    QProcess::execute("sudo groupadd -r autologin");
+    QProcess::execute(QString("sudo gpasswd -a %1 autologin").arg(username));
 }
 
 QString SysdbusRegister::getSuspendThenHibernate() {

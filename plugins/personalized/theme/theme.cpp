@@ -685,7 +685,7 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
         kwinSettings->setValue("kwin4_effect_translucencyEnabled", false);
         kwinSettings->setValue("zoomEnabled", false);
         kwinSettings->endGroup();
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 6, 0)
 
 #else
         for (int i = 0; i < effectList.length(); i++) {
@@ -704,7 +704,7 @@ void Theme::writeKwinSettings(bool change, QString theme, bool effect) {
         kwinSettings->setValue("kwin4_effect_translucencyEnabled", true);
         kwinSettings->setValue("zoomEnabled", true);
         kwinSettings->endGroup();
-#if QT_VERSION <= QT_VERSION_CHECK(5, 12, 0)
+#if QT_VERSION <= QT_VERSION_CHECK(5, 6, 0)
 
 #else
         // 开启模糊特效：
