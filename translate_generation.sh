@@ -7,7 +7,7 @@ version=(`echo $ID`)
 for ts in "${ts_list[@]}"
 do
     printf "\nprocess ${ts}\n"
-    if [ "$version" == "fedora" ] || [ "$version" == "opensuse-leap" ] || [ "$version" == "opensuse-tumbleweed" ];then
+    if [ "$version" == "fedora" ] || [ "$version" == "opensuse-leap" ] || [ "$version" == "opensuse-tumbleweed" ] || [ "$version" == "openEuler" ];then
         lrelease-qt5 "${ts}"
     else
 	lrelease "${ts}"
