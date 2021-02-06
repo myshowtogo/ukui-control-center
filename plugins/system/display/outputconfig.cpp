@@ -194,6 +194,7 @@ void OutputConfig::initUi()
     scaleFrame->setMinimumSize(550,50);
     scaleFrame->setMaximumSize(960,50);
     vbox->addWidget(scaleFrame);
+    scaleFrame->setVisible(isSupportDPI());
 
     int scale = getScreenScale();
 

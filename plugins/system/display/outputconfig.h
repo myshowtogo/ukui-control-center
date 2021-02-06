@@ -38,6 +38,7 @@ class OutputConfig : public QWidget
     //拿取配置
     void initConfig(const KScreen::ConfigPtr &config);
     QStringList readFile(const QString& filepath);
+    bool isSupportDPI();
 
   protected Q_SLOTS:
     void slotResolutionChanged(const QSize &size);

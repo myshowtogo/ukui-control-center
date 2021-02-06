@@ -232,7 +232,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Wed Jan 27 2021 lvhan <lvhan@kylinos.cn> - 3.0.1-5
-- update to upstream version 3.0.0-1
+- update to upstream version 3.0.1-1
 
 * Thu Jan 21 2021 lvhan <lvhan@kylinos.cn> - 3.0.1-4
 - fix-blueman-tray-and-groupadd-autologin
